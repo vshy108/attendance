@@ -1,0 +1,14 @@
+tr
+  - overtime_in_mins = @worker_report[:overtime_in_mins]
+  - overtime_value = @worker_report[:overtime_value]
+  td = link_to(@worker_report[:worker_name], worker_path(id: @worker_report[:worker_id]))
+  td
+    - @worker_report[:all_punch_times_string].each do |apts|
+      = link_to apts[:value], punch_time_path(apts[:id]), {style: 'margin-right: 12px;'}
+  td = @odd_link
+  td = minutes_to_hhmm(@worker_report[:working_minutes])
+  td = minutes_to_hhmm(@worker_report[:overtime_in_mins_ignore_lateness])
+  td = minutes_to_hhmm(@worker_report[:late_minutes])
+  td = minutes_to_hhmm(overtime_in_mins)
+  td = overtime_value ? "#{number_with_precision(overtime_value, precision: 2)}" : '-'
+  td = render_ot_pay(overtime_value, overtime_in_mins)

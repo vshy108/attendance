@@ -1,0 +1,28 @@
+h2 Monthly Attendance
+= link_to 'New Punch time', new_punch_time_path
+
+.punch-container
+  .filter-container
+    .input-grouping
+      .inner-group
+        label Choose a month
+        == render 'application/month_picker', id: 'punch-time-index-show-month-picker'
+
+  .title
+    span.label For
+    span.month = @month_string
+
+  .result
+    - @all_workers_punch_times.each do |workers_punch_times|
+      h4.name = workers_punch_times[:name]
+
+      .punch-table
+        - workers_punch_times[:daily_attendances].each_with_index do |daily_punch_time, index|
+          .punch-row
+            span.index = index + 1
+            div.punchtime-list
+              - daily_punch_time.each do |punch_time|
+                = link_to punch_time_path(id: punch_time[:id]) do
+                  .punchtime-container
+                    .punch-shape
+                    span.punchtime = punch_time[:punched_datetime]&.strftime("%R")

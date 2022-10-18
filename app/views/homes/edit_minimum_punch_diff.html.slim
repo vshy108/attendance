@@ -1,0 +1,10 @@
+h4 Edit Minimum Minutes Difference between Punchings
+
+= form_tag(update_minimum_punch_diff_path, method: :put) do
+  = render_error_messages(@errors, 'minimum minutes difference', self)
+  .field
+    = label_tag 'Minimum Minutes Difference'
+    br
+    = number_field_tag 'home[min_punch_diff_minutes]', @min_punch_diff_minutes, min: 1, required: true
+  .actions
+    = submit_tag "Update"

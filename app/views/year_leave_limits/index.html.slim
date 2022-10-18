@@ -1,0 +1,42 @@
+h1 Year Leave Limits
+
+= search_form_for @search, class:'filter-container' do |f|
+  .input-grouping
+    .inner-group.col-sm
+      = f.label "Input worker name"
+      = f.search_field :worker_name_cont
+    .inner-group.col-sm
+      = f.label "Input year number"
+      = f.search_field :year_number_eq
+  = f.submit
+
+table
+  thead
+    tr
+      th Worker
+      th Year number
+      th Allowed annual days total
+      th
+      th
+      th
+
+  tbody
+    - @year_leave_limits.each do |year_leave_limit|
+      tr
+        td = year_leave_limit.worker.name
+        td = year_leave_limit.year_number
+        td = year_leave_limit.allowed_annual_days_total
+        td = link_to 'Show', year_leave_limit
+        td = link_to 'Edit', edit_year_leave_limit_path(year_leave_limit)
+        td = link_to 'Destroy', year_leave_limit, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+== pagy_bootstrap_responsive_nav(@pagy)
+br
+
+= link_to 'New Year leave limit', new_year_leave_limit_path
+
+javascript:
+  $(document).on('turbolinks:load', function() {
+    Pagy.init()
+  });

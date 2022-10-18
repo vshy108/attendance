@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+holiday_0:
+  valid_date: 2019-01-01
+  name: New Year's Day
+  description: National except Johor, Kedah, Kelantan, Perlis & Terengganu
+
+holiday_1:
+  valid_date: 2019-02-05
+  name: Chinese New Year
+  description: National

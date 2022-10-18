@@ -1,0 +1,44 @@
+h1 Holidays
+
+= search_form_for @search, class:'filter-container' do |f|
+  .input-grouping
+    .inner-group.col-sm
+      = f.label "Input valid year"
+      = f.search_field :valid_date_year_equals
+    .inner-group.col-sm
+      = f.label "Input name/description"
+      = f.search_field :name_or_description_cont
+  = f.submit
+
+table
+  thead
+    tr
+      th Valid date
+      th Name
+      th Description
+      th
+      th
+      th
+
+  tbody
+    - @holidays.each do |holiday|
+      tr
+        td = holiday.valid_date
+        td = holiday.name
+        td = holiday.description
+        td = link_to 'Show', holiday
+        td = link_to 'Edit', edit_holiday_path(holiday)
+        td = link_to 'Destroy', holiday, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+== pagy_bootstrap_responsive_nav(@pagy)
+br
+
+= link_to 'New Holiday', new_holiday_path
+
+javascript:
+  $(document).on('turbolinks:load', function() {
+    Pagy.init()
+  });
+
+

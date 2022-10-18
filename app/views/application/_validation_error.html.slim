@@ -1,0 +1,6 @@
+#error_explanation
+  h2 = "#{local_assigns.fetch(:num_errors_string)} prohibited this #{local_assigns.fetch(:object_name)} from being saved:"
+  ul
+    - local_assigns.fetch(:error_messages).each do |message|
+      li = message.humanize
+

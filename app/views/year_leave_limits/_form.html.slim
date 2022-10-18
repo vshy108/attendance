@@ -1,0 +1,16 @@
+= form_for @year_leave_limit do |f|
+  = render_error_messages(@errors, 'year leave limit', self)
+
+  .field
+    = f.label :year_number
+    br
+    = f.number_field :year_number, min: 2001, required: true
+  .field
+    = f.label :allowed_annual_days_total
+    br
+    = f.number_field :allowed_annual_days_total, min: 1, required: true
+  .field
+    = f.label :worker
+    br
+    = f.select :worker_id, options_for_select(@workers.collect { | worker | [worker.name, worker.id] }, @year_leave_limit.worker_id), {include_blank: @year_leave_limit.persisted? ? false : '-', required: true}, {}
+  .actions = f.submit (@year_leave_limit.persisted? ? 'Update' : 'Create')

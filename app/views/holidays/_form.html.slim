@@ -1,0 +1,21 @@
+= form_for @holiday do |f|
+  = render_error_messages(@errors, 'holiday', self)
+  .field
+    = f.label :valid_date
+    br
+    = f.text_field :valid_date, required: true, autocomplete: "off"
+  .field
+    = f.label :name
+    br
+    = f.text_field :name, required: true
+  .field
+    = f.label :description
+    br
+    = f.text_field :description
+  .actions = f.submit (@holiday.persisted? ? 'Update' : 'Create')
+
+javascript:
+  $('#holiday_valid_date').datetimepicker({
+    timepicker: false,
+    format: 'Y-m-d',
+  });

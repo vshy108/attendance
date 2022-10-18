@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% 10.times do |n| %>
+worker_<%= n %>:
+  name: <%= Faker::Name.name %>
+  overtime_value: <%= Faker::Number.between(10, 100) %>
+<% end %>
+
+special_worker_0:
+  name: <%= Faker::Name.name %>
+  overtime_value: 12.0
+
+special_worker_1:
+  name: <%= Faker::Name.name %>
+  overtime_value: 12.0
+
+special_worker_2:
+  name: <%= Faker::Name.name %>
+  overtime_value: 12.0
+
+special_worker_3:
+  name: <%= Faker::Name.name %>
+  overtime_value: 12.0

@@ -1,0 +1,42 @@
+h2 = "#{@worker.name} (#{@worker.qr_code})"
+.row
+  div.col-sm
+    ' Default Working Template:
+    = @default_template&.name ? link_to(@default_template&.name, working_template_path(id: @default_template.id)) : '-'
+  div.col-sm
+    ' Overtime Value:
+    = render_overtime_value(@worker.overtime_value)
+div
+  - if @worker.repeat_template.present?
+    ' Repeat Working Template:
+    = link_to("Repeat every #{@repeat_template.repeat_day_difference} days", repeat_template_path(@repeat_template))
+
+.punch-container
+  .filter-container
+    .input-grouping
+      .inner-group
+        label Choose a month
+        == render 'application/month_picker', id: 'worker-show-month-picker'
+
+  .title
+    span.label For
+    span.month = @month_string
+
+  .result
+    .punch-table
+      - @punch_times_daily.each_with_index do |daily_punch_time, index|
+        .punch-row
+          span.index = index + 1
+          div.punchtime-list
+            - daily_punch_time.each do |punch_time|
+              = link_to punch_time_path(id: punch_time[:id]) do
+                .punchtime-container
+                  .punch-shape
+                  span.punchtime = punch_time[:punched_datetime]&.strftime("%R")
+
+
+=> link_to 'Edit', edit_worker_path(@worker)
+'|
+=< link_to 'Delete', @worker, data: { confirm: 'Are you sure?' }, method: :delete
+'|
+=< link_to 'Back to List', workers_path

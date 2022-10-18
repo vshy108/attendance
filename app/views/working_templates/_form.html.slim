@@ -1,0 +1,189 @@
+= form_for @working_template do |f|
+  = render_error_messages(@errors, 'working template', self)
+
+  .field
+    = f.label :name
+    = f.text_field :name, {autocomplete: "off"}
+
+  .field
+    = label_tag "Overtime Type"
+    = select_tag "overtime_type", options_for_select(@overtime_options.collect {|option| [ option.titleize, option ] }, @current_overtime_option)
+
+  .field#override_working_minutes
+    label Minimum Working Hours
+    = text_field_tag 'minimum_working_hours', nil, autocomplete: 'off'
+    | hrs
+    = text_field_tag 'minimum_working_minutes', nil, autocomplete: 'off'
+    | mins
+    br
+    small #{"(empty both fields means it follows the total minutes of valid working sections for overtime type of disabled and direct after off work)"}
+
+  = hidden_field_tag 'working_template[override_working_minutes]', ''
+
+  div#valid_work_sections
+    p
+      strong
+        | Valid work sections:
+    div#total-valid-work-sections-duration
+      | 0 hrs 0 mins
+    = f.fields_for :valid_work_sections do |valid_work_section|
+      = render 'valid_work_section_fields', f: valid_work_section
+
+    div.links
+      = link_to_add_association 'add valid work section', f, :valid_work_sections
+
+  .actions = f.submit (@working_template.persisted? ? 'Update' : 'Create')
+
+javascript:
+  $(document).on('turbolinks:load', function() {
+    var override = "#{{@working_template.override_working_minutes}}";
+    var totalSectionsMinutes = "#{{@total_sections_minutes}}";
+    if (totalSectionsMinutes) {
+      var totalSectionsMinutesInt = parseInt(totalSectionsMinutes);
+      var originalTotalHours = parseInt(totalSectionsMinutesInt / 60, 10);
+      var originalTotalMinutes = parseInt(totalSectionsMinutesInt % 60, 10);
+      $('#total-valid-work-sections-duration').text(`${originalTotalHours} hrs ${originalTotalMinutes} mins`);
+    }
+
+    function convertMinutesToTime(minutes){
+      return parseInt(minutes / 60, 10).toString().padStart(2,"0") + ':' + parseInt(minutes % 60, 10).toString().padStart(2,"0");
+    }
+
+    $('.time-addon').datetimepicker({
+      datepicker: false,
+      format: 'H:i',
+    });
+
+    function assignFirstTimeValue(time_in_minutes, dateJqueryObject, timeJqueryObject){
+      if (time_in_minutes < 0) {
+        dateJqueryObject.val('Yesterday');
+        timeJqueryObject.val(convertMinutesToTime(time_in_minutes + 1440));
+      } else if (time_in_minutes >= 1440) {
+        dateJqueryObject.val('Tomorrow');
+        timeJqueryObject.val(convertMinutesToTime(time_in_minutes - 1440));
+      } else {
+        dateJqueryObject.val('Today');
+        timeJqueryObject.val(convertMinutesToTime(time_in_minutes));
+      }
+    }
+
+    var valid_work_sections_length = "#{{@working_template.valid_work_sections.length}}";
+    var from_time_in_minutes_string = "#{{@working_template.valid_work_sections.collect(&:from_time_in_minute)}}";
+    var from_time_in_minutes = JSON.parse(from_time_in_minutes_string);
+    var to_time_in_minutes_string = "#{{@working_template.valid_work_sections.collect(&:to_time_in_minute)}}";
+    var to_time_in_minutes = JSON.parse(to_time_in_minutes_string);
+    for (var i = 0; i < valid_work_sections_length; i += 1) {
+      var this_from_time_in_minutes = from_time_in_minutes[i];
+      assignFirstTimeValue(this_from_time_in_minutes, $('#from_time_in_minute_day_' + i), $('#from_time_in_minute_time_' + i))
+
+      var this_to_time_in_minutes = to_time_in_minutes[i];
+      assignFirstTimeValue(this_to_time_in_minutes, $('#to_time_in_minute_day_' + i), $('#to_time_in_minute_time_' + i))
+    }
+
+    if (override !== "") {
+      if ($('#minimum_working_hours')[0]) {
+        $('#minimum_working_hours')[0].value = parseInt(override / 60, 10);
+      }
+      if ( $('#minimum_working_minutes')[0]) {
+        $('#minimum_working_minutes')[0].value = parseInt(override % 60, 10);
+      }
+      $('#working_template_override_working_minutes').val(override);
+    }
+
+    function updateTotal(){
+      var sectionsValueArray = $('.nested-fields:visible').children('.minutes-count').map(function(_,minuteComponent) {
+        return (minuteComponent.value);
+      });
+      var total = 0;
+      if (sectionsValueArray.length % 2 == 0) {
+        for (var i = 0; i < sectionsValueArray.length / 2; i += 1) {
+            if (sectionsValueArray[2 * i] !== '' && sectionsValueArray[2 * i + 1] !== '') {
+              total += parseInt(sectionsValueArray[2 * i + 1], 10) - parseInt(sectionsValueArray[2 * i], 10);
+            }
+        }
+        var hours = parseInt(total / 60, 10);
+        var minutes = parseInt(total % 60, 10);
+
+        $('#total-valid-work-sections-duration').text(`${hours} hrs ${minutes} mins`);
+      }
+    }
+
+    $('#valid_work_sections').on('cocoon:after-remove', function() {
+      updateTotal();
+    });
+
+    $( "body" ).on("change", ".minutes-count", function() {
+      updateTotal();
+    });
+
+    function updateHiddenField(currentId, thisObject) {
+      var timeValue;
+      var dateValue;
+      if (/minute_time/.test(currentId)) {
+        timeValue = thisObject.value;
+        var correspondingDayId = currentId.replace('minute_time', 'minute_day');
+        var dateValue = $('#' + correspondingDayId).val();
+      } else {
+        var optionSelected = $("option:selected", thisObject);
+        var dateValue = thisObject.value;
+        var correspondingTimeId = currentId.replace('minute_day', 'minute_time');
+        var timeValue = $('#' + correspondingTimeId).val();
+      }
+      var dayOffset = 0;
+      switch (dateValue) {
+        case 'Yesterday':
+          dayOffset = - 24 * 60;
+          break;
+        case 'Tomorrow':
+          dayOffset = 24 * 60;
+          break;
+        default:
+          dayOffset = 0;
+      }
+      var timeValueArray = timeValue.split(':');
+      var calculationResult = dayOffset + parseInt(timeValueArray[0] || 0, 10) * 60  + parseInt(timeValueArray[1] || 0, 10);
+      var idArray = currentId.split('_');
+      var fromTo = idArray[0];
+      var idIndex = idArray[idArray.length - 1];
+      var correspondingId = 'working_template_valid_work_sections_attributes_' + idIndex + '_' + fromTo + '_time_in_minute';
+      $('#' + correspondingId).val(calculationResult);
+    }
+
+    $( "body" ).on("change", ".day-addon, .time-addon", function(e) {
+      updateHiddenField(e.target.id, this);
+      updateTotal();
+    });
+
+    $('#valid_work_sections').on('cocoon:after-insert', function(_, insertedItem) {
+      insertedItem.find('.time-addon').datetimepicker({
+        datepicker: false,
+        format: 'H:i',
+      });
+      var uniqueId = insertedItem.find('.minutes-count')[0].id.split('_')[6];
+      insertedItem.find('.day-addon, .time-addon').each(function(_, item) {
+        var oldId = item.id;
+        var newId = oldId.replace('new_valid_work_sections', uniqueId);
+        $('#' + oldId).attr("id", newId).attr("name", newId);
+      });
+    });
+
+    function assignMinimumWorkingMinutes(minutes_values, hours_values) {
+      if (hours_values === '' && minutes_values === '') {
+        $('#working_template_override_working_minutes').val('');
+      } else {
+        var minutes = parseInt(minutes_values || 0, 10);
+        var hours = parseInt(hours_values || 0, 10);
+        $('#working_template_override_working_minutes').val(hours * 60 + minutes);
+      }
+    }
+
+    $('#minimum_working_hours').on('change', function(){
+      var minutes_values = $('#minimum_working_minutes').val();
+      assignMinimumWorkingMinutes(minutes_values, this.value);
+    });
+
+    $('#minimum_working_minutes').on('change', function(){
+      var hours_values = $('#minimum_working_hours').val();
+      assignMinimumWorkingMinutes(this.value, hours_values);
+    });
+  });

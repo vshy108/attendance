@@ -1,0 +1,162 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ */
+@import "jquery-ui";
+@import "font-awesome";
+@import "bootstrap";
+@import "datetimepicker";
+@import "jquery-ui-month-picker";
+
+.body-container {
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.top-navbar {
+  position: relative;
+  height: 64px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 24px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
+  z-index: 10;
+
+  a {
+    color: rgba(0, 0, 0, 0.9);
+    transition: color 0.2s;
+    font-size: 12px;
+  }
+
+  a:hover {
+    color: rgba(0, 0, 0, 0.75);
+    text-decoration: none;
+  }
+}
+
+.sidebar {
+  background-color: #2e3451;
+  display: flex;
+  flex-direction: column;
+  min-width: 244px;
+  width: 244px;
+  transition: margin-left 0.2s cubic-bezier(0, 0, 0.2, 1);
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 600;
+    height: 64px;
+    margin-bottom: 40px;
+
+    a,
+    a:visited {
+      color: #ee5559;
+    }
+
+    a:hover {
+      background-color: transparent;
+      text-decoration: none;
+    }
+
+    .logo {
+      flex: 1;
+      padding-left: 24px;
+    }
+
+    a.sidebar-toggle {
+      font-weight: 100;
+      color: white;
+      margin-right: 16px;
+      cursor: pointer;
+    }
+  }
+}
+
+.sidebar.shrink {
+  margin-left: -196px;
+}
+
+.side-menu {
+  display: flex;
+  flex-direction: column;
+  margin-right: 48px;
+}
+
+.side-menu a {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+  margin-bottom: 16px;
+  padding: 8px 0 8px 24px;
+  border-radius: 0 40px 40px 0;
+  transition: background-color 0.2s, padding-left 0.2s;
+}
+
+.side-menu a:hover {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding-left: 32px;
+}
+
+a.current-tab {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.background-container {
+  flex: 1;
+  background-color: #FAFBFF;
+  width: 100%;
+  overflow: auto;
+}
+
+.yield-container {
+  height: calc(100vh - 64px);
+  padding: 16px 24px 48px;
+  overflow: scroll;
+}
+
+// Vendor CSS
+
+// Pagy
+.page-item.active .page-link {
+  background-color: #82ACEA;
+  border-color: #82ACEA;
+}
+
+// Datetimepicker
+.xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_today {
+  color: #EA5555;
+}
+
+.xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_current{
+  background: #EA5555;
+  box-shadow: #F13F3F 0 1px 3px 0 inset;
+  color: #FFF;
+}
+
+// Monthpicker
+.ui-state-highlight, .ui-widget-content .ui-state-highlight {
+  border: 1px solid #EA5555;
+  background: inherit;
+  color: #EA5555 !important;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+  border: 1px solid #F13F3F;
+  background: #EA5555;
+  color: #FFF !important;
+}

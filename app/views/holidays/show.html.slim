@@ -1,0 +1,14 @@
+h1
+  => @holiday.name
+  | (Holiday)
+
+p
+  strong Valid date:
+  =< @holiday.valid_date
+p
+  strong Description:
+  =< @holiday.description
+
+=> link_to 'Edit', edit_holiday_path(@holiday)
+'|
+=< link_to 'Back', holidays_path

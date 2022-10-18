@@ -1,0 +1,136 @@
+en:
+  errors:
+    or: "or"
+    array?: "must be an array"
+
+    empty?: "must be empty"
+
+    excludes?: "must not include %{value}"
+
+    excluded_from?:
+      arg:
+        default: "must not be one of: %{list}"
+        range: "must not be one of: %{list_left} - %{list_right}"
+    exclusion?: "must not be one of: %{list}"
+
+    eql?: "must be equal to %{left}"
+
+    not_eql?: "must not be equal to %{left}"
+
+    filled?: "must be filled"
+
+    format?: "is in invalid format"
+
+    number?: "must be a number"
+
+    odd?: "must be odd"
+
+    even?: "must be even"
+
+    gt?: "must be greater than %{num}"
+
+    gteq?: "must be greater than or equal to %{num}"
+
+    hash?: "must be a hash"
+
+    included_in?:
+      arg:
+        default: "must be one of: %{list}"
+        range: "must be one of: %{list_left} - %{list_right}"
+    inclusion?: "must be one of: %{list}"
+
+    includes?: "must include %{value}"
+
+    bool?: "must be boolean"
+
+    true?: "must be true"
+
+    false?: "must be false"
+
+    int?: "must be an integer"
+
+    float?: "must be a float"
+
+    decimal?: "must be a decimal"
+
+    date?: "must be a date"
+
+    date_time?: "must be a date time"
+
+    time?: "must be a time"
+
+    key?: "is missing"
+
+    attr?: "is missing"
+
+    lt?: "must be less than %{num}"
+
+    lteq?: "must be less than or equal to %{num}"
+
+    max_size?: "size cannot be greater than %{num}"
+
+    min_size?: "size cannot be less than %{num}"
+
+    none?: "cannot be defined"
+
+    str?: "must be a string"
+
+    type?: "must be %{type}"
+
+    longer_one_day: "error: smallest from and largest to must less than 1440"
+
+    overlapping_valid_work_sections: "cannot have any overlappings"
+
+    valid_minimum_working_hours: "must less than total of all valid work sections differences"
+
+    valid_relationship_from_to: "is always have from time in minute less than to time in minute"
+
+    repeated_punched_datetime: "is not allowed"
+    zero_valid_work_sections: "is not allowed"
+    repeated_first_repeat_date: "is not allowed"
+    zero_repeat_template_parts: "is not allowed"
+    repeated_worker_year: "is not allowed"
+
+    size?:
+      arg:
+        default: "size must be %{size}"
+        range: "size must be within %{size_left} - %{size_right}"
+
+      value:
+        string:
+          arg:
+            default: "length must be %{size}"
+            range: "length must be within %{size_left} - %{size_right}"
+
+    rules:
+      worker_id:
+        record?: "Worker does not exist"
+        unique?: ': one worker only can have one repeat template'
+
+      working_day_id:
+        record?: "Worker day does not exist"
+
+      punched_datetime:
+        convert_datetime_and_lteq?: "cannot after now"
+
+      name:
+        case_insensitive_unique?: "must be unique (%{value} exists)"
+
+      working_template_id:
+        record?: "Working template does not exist"
+
+      working_date:
+        string_to_date?: "Invalid working date"
+
+      first_repeat_date:
+        string_to_date?: "Invalid first repeat date"
+
+      override_working_minutes:
+        lteq_total_sections_minutes?: "Minimum Working Hours is too large"
+        need_override_working_minutes?: "is missing"
+
+      valid_date:
+        string_to_date?: "Invalid valid date"
+        unique?: 'must be unique (%{value} exists)'
+
+

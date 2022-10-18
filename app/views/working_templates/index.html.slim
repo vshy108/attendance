@@ -1,0 +1,35 @@
+h4 Listing working templates
+
+.template-container
+  - @working_templates.each do |working_template|
+    .worker-outer-container
+      p.id
+        | # #{working_template.id}
+      .worker-container
+        .template-detail-container
+          p.template-name
+            | #{working_template.name}
+          p.template-label CONTAIN WORKER
+          p.template-detail #{working_template.default_template_count}
+          p.template-label OT TYPE
+          p.template-detail #{working_template.overtime_type}
+          p.template-label MINIMUM WORKING HOUR
+          p.template-detail #{time_conversion(working_template.override_working_minutes)}
+        .action-container
+          = link_to 'SHOW', working_template.original_object
+          - if working_template.is_modification_allowed?
+            = link_to 'EDIT', edit_working_template_path(working_template.original_object), method: :get
+            = link_to 'DELETE', working_template.original_object, data: { confirm: 'Are you sure?' }, method: :delete
+          - else
+            = link_to 'EDIT OVERTIME', edit_working_template_overtime_path(working_template.original_object)
+
+br
+== pagy_bootstrap_responsive_nav(@pagy)
+br
+
+= link_to 'New Working Template', new_working_template_path, "data-turbolinks": false
+
+javascript:
+  $(document).on('turbolinks:load', function() {
+    Pagy.init()
+  });

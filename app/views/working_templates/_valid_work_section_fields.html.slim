@@ -1,0 +1,11 @@
+.nested-fields
+  = f.label :from_time_in_minute
+  = f.hidden_field :from_time_in_minute, class: "minutes-count"
+  = select_tag "from_time_in_minute_day_#{f.options[:child_index]}", options_for_select(%w[Yesterday Today Tomorrow], 'Today'), class: "day-addon"
+  = text_field_tag "from_time_in_minute_time_#{f.options[:child_index]}", nil, class: "time-addon", autocomplete: 'off'
+  br
+  = f.label :to_time_in_minute
+  = f.hidden_field :to_time_in_minute, class: "minutes-count"
+  = select_tag "to_time_in_minute_day_#{f.options[:child_index]}", options_for_select(%w[Yesterday Today Tomorrow], 'Today'), class: "day-addon"
+  = text_field_tag "to_time_in_minute_time_#{f.options[:child_index]}", nil, class: "time-addon", autocomplete: 'off'
+  = link_to_remove_association "remove valid work section", f

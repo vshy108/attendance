@@ -1,0 +1,16 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% 10.times do |n| %>
+year_leave_limit_<%= n %>:
+  year_number: 2018
+  allowed_annual_days_total: 14
+  worker_id: <%= ActiveRecord::FixtureSet.identify("worker_#{n}".parameterize.underscore.to_sym) %>
+<% end %>
+
+<% 10.times do |n| %>
+year_leave_limit_<%= n + 10 %>:
+  year_number: 2019
+  allowed_annual_days_total: 14
+  worker_id: <%= ActiveRecord::FixtureSet.identify("worker_#{n}".parameterize.underscore.to_sym) %>
+<% end %>
+

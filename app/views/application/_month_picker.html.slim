@@ -1,0 +1,10 @@
+input[type="text" readonly value=@query id=local_assigns.fetch(:id)]
+
+javascript:
+  $("#" + "#{{local_assigns.fetch(:id)}}").MonthPicker({
+    Button: null,
+    MaxMonth: "#{{@current_month_value}}",
+    OnAfterMenuClose: function() {
+      window.location.search = "query=" + this.value;
+    }
+  });

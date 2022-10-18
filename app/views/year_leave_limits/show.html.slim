@@ -1,0 +1,9 @@
+h2 = "#{@year_leave_limit.worker.name}'s Year Leave Limit of #{@year_leave_limit.year_number}"
+
+strong
+  ' Allowed annual days total:
+= @year_leave_limit.allowed_annual_days_total
+br
+=> link_to 'Edit', edit_year_leave_limit_path(@year_leave_limit)
+'|
+=< link_to 'Back', year_leave_limits_path

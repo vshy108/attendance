@@ -1,0 +1,10 @@
+.dashboard-attendance-container
+  .title
+    span.label Absentee for
+    span.date = "#{@date_string}"
+
+  .absentee-container
+    - @other_workers.each do |other_worker|
+      = link_to worker_path(id: other_worker.id) do
+        .absentee-detail
+          = other_worker.name

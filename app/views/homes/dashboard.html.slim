@@ -1,0 +1,54 @@
+h2 Attendance Overview
+
+.dashboard-container
+
+  = search_form_for(@q_worker, url: homes_dashboard_path, class:'filter-container', method: :get) do |f|
+    .input-grouping
+      .inner-group
+        = f.label "Pick a date"
+        = f.search_field(:punch_times_punched_datetime_gteq, {autocomplete: "off"})
+      .inner-group
+        = f.label "Input a name"
+        = f.search_field :name_cont
+    = f.submit
+
+  .dashboard-attendance-container
+    .title
+      span.label Attendance for
+      span.date = "#{@date_string}"
+
+    == pagy_bootstrap_responsive_nav(@pagy)
+
+    table
+      thead
+        tr
+          th Name
+          th Punch Time
+
+      tbody
+        - @workers.each do |worker|
+          tr
+            td = link_to worker.name, worker_path(id: worker.id)
+            td
+              - worker.specified_day_punch_times.each do |punch_time|
+                = link_to punch_time[:value], punch_time_path(id: punch_time[:id]), {style: 'margin-right: 10px;'}
+
+
+  = render_absence_table(@date_string, @other_workers, self)
+
+javascript:
+  $(document).on('turbolinks:load', function() {
+    Pagy.init();
+    $('#q_punch_times_punched_datetime_gteq').val();
+    $('#q_punch_times_punched_datetime_gteq').datetimepicker({
+      timepicker: false,
+      format: 'Y-m-d',
+      value: "#{{@date_string}}",
+      maxDate: "#{{@today_string}}"
+    });
+  });
+
+
+
+
+

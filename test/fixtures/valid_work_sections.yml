@@ -1,0 +1,48 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% 9.times do |n| %>
+valid_work_section_<%= n %>:
+  from_time_in_minute: 480
+  to_time_in_minute: 1080
+  working_template_id: <%= ActiveRecord::FixtureSet.identify("working_template_#{n}".parameterize.underscore.to_sym) %>
+<% end %>
+
+special_valid_work_section_0:
+  from_time_in_minute: 510
+  to_time_in_minute: 780
+  working_template: special_working_template_0
+
+special_valid_work_section_1:
+  from_time_in_minute: 840
+  to_time_in_minute: 1080
+  working_template: special_working_template_0
+
+special_valid_work_section_2:
+  from_time_in_minute: 510
+  to_time_in_minute: 780
+  working_template: special_working_template_1
+
+special_valid_work_section_3:
+  from_time_in_minute: 840
+  to_time_in_minute: 1080
+  working_template: special_working_template_1
+
+special_valid_work_section_4:
+  from_time_in_minute: 510
+  to_time_in_minute: 780
+  working_template: special_working_template_2
+
+special_valid_work_section_5:
+  from_time_in_minute: 840
+  to_time_in_minute: 1200
+  working_template: special_working_template_2
+
+special_valid_work_section_6:
+  from_time_in_minute: 510
+  to_time_in_minute: 780
+  working_template: special_working_template_3
+
+special_valid_work_section_7:
+  from_time_in_minute: 840
+  to_time_in_minute: 1080
+  working_template: special_working_template_3

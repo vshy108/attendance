@@ -1,0 +1,46 @@
+h2 = "Working Template, #{@working_template.name}"
+p
+  strong Overtime type:
+  br
+  = @overtime_type.titleize
+  br
+  br
+  strong Minimum Working Hours:
+  br
+  = time_conversion(@working_template.override_working_minutes)
+  br
+  br
+  - if @default_templates_owners.length.positive?
+    strong Default template for
+    br
+    - @default_templates_owners.each do |default_templates_owner|
+      = link_to default_templates_owner.name, worker_path(id: default_templates_owner.id), {style: 'margin-right: 10px;'}
+    br
+    br
+  - if @repeat_templates.length.positive?
+    strong Involved in repeat templates for
+    br
+    - @repeat_templates.each do |repeat_template|
+      = link_to repeat_template.worker.name, repeat_template_path(repeat_template), {style: 'margin-right: 10px;'}
+
+h3 Valid Work Sections
+
+table
+  thead
+    tr
+      th No.
+      th From
+      th To
+
+  tbody
+    - @valid_work_sections.each_with_index do |valid_work_section, index|
+      tr
+        td = index + 1
+        td = formatted_time_range(valid_work_section.from_time_in_minute)
+        td = formatted_time_range(valid_work_section.to_time_in_minute)
+br
+
+- if !@working_template.default_templates.any? && !@working_template.working_days.any?
+  => link_to 'Edit', edit_working_template_path(@working_template), method: :get
+  '|
+=< link_to 'Back to List', working_templates_path

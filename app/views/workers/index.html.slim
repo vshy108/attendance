@@ -1,0 +1,33 @@
+h2 Workers
+
+.list-container
+  - @final_results.each do |worker_object|
+    .worker-outer-container
+      p.id = worker_object[:worker].qr_code
+      .worker-container
+        .image-container
+          .round-img
+          p = worker_object[:worker].name
+        .worker-detail-container
+          .label-container
+            p.label LAST SEEN
+            - if worker_object[:day_hash].nil?
+              p.date.day-empty N/A
+            - else
+              p.date[class=worker_object[:day_hash][:class_name]] = worker_object[:day_hash][:day_string]
+          - if worker_object[:day_hash].nil?
+            p.time N/A
+          - else
+            p.time = worker_object[:latest_punch_time]
+        .action-container
+          = link_to "PROFILE", worker_object[:worker]
+          = link_to "QR CODE", qr_code_path(worker_object[:worker])
+
+br
+== pagy_bootstrap_responsive_nav(@pagy)
+br
+
+javascript:
+  $(document).on('turbolinks:load', function() {
+    Pagy.init()
+  });

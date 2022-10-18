@@ -1,0 +1,9 @@
+- flash.each do |key, msg|
+  = content_tag :div, msg, id: key, class: "alert"
+
+javascript:
+  $(document).on('turbolinks:load', function(){
+    $(".alert").delay(2000).slideUp(500, function(){
+      $(".alert").alert('close');
+    });
+  });

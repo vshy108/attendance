@@ -1,0 +1,20 @@
+= form_for @punch_time do |f|
+  = render_error_messages(@errors, 'punch time', self)
+
+  .field
+    = f.label :punched_datetime
+    input#punch_time_punched_datetime[name="punch_time[punched_datetime]" type="text" autocomplete="off"]
+  .field
+    = f.label :worker
+    = f.select :worker_id, options_for_select(@workers.collect { | worker | [worker.name, worker.id] }, @punch_time.worker_id), {include_blank: @punch_time.persisted? ? false : '-'}, {}
+    .actions = f.submit (@punch_time.persisted? ? 'Update' : 'Create')
+
+javascript:
+  var punch_time = "#{{@punch_time}}";
+  if (punch_time) {
+    var punched_datetime = "#{{@punch_time.punched_datetime}}";
+    var today_string = "#{{@today_string}}";
+    $('#punch_time_punched_datetime').datetimepicker({ value: punched_datetime, maxDate: today_string });
+  } else {
+    $('#punch_time_punched_datetime').datetimepicker({ maxDate: today_string });
+  }

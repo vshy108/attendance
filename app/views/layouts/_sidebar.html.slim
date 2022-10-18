@@ -1,0 +1,15 @@
+.sidebar class=is_shrink?
+  .logo-container
+    .logo = link_to(root_path) do
+      | ATTENDANCE
+    a.sidebar-toggle
+      | ☰
+
+  .side-menu
+    = nav_link 'Dashboard', homes_dashboard_path
+    = nav_link 'Workers', workers_path
+    = nav_link 'Punch Times', punch_times_path
+    = nav_link 'Working Template', working_templates_path
+    = nav_link 'Repeat Template', repeat_templates_path
+    = nav_link 'Reports', report_dashboard_path
+    = nav_link 'Settings', setting_path

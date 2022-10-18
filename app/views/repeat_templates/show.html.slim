@@ -1,0 +1,22 @@
+h1 #{@repeat_template.worker.name}'s Repeat Template
+p
+  strong Repeat every:
+  =< "#{@repeat_template.repeat_day_difference} days"
+
+table
+  thead
+    tr
+      th First Repeat Date
+      th Working template
+
+  tbody
+    - @repeat_template_parts.each do |repeat_template_part|
+      tr
+        td = repeat_template_part.first_repeat_date.strftime('%F (%a)')
+        td = link_to repeat_template_part.working_template.name, repeat_template_part.working_template
+
+=> link_to 'Edit', edit_repeat_template_path(@repeat_template)
+'|
+=< link_to 'Back to list', repeat_templates_path
+'|
+=< link_to 'Back to worker show', worker_path(@repeat_template.worker)

@@ -1,0 +1,33 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% 9.times do |n| %>
+working_day_<%= n %>:
+  working_date: <%= Date.today %>
+  working_template_id: <%= ActiveRecord::FixtureSet.identify("working_template_#{n}".parameterize.underscore.to_sym) %>
+  worker_id: <%= ActiveRecord::FixtureSet.identify("worker_#{n}".parameterize.underscore.to_sym) %>
+<% end %>
+
+special_working_day_0:
+  working_date: 2018-12-14
+  working_template: special_working_template_0
+  worker: special_worker_0
+
+special_working_day_1:
+  working_date: 2018-12-15
+  working_template: special_working_template_0
+  worker: special_worker_0
+
+special_working_day_2:
+  working_date: 2018-12-16
+  working_template: special_working_template_1
+  worker: special_worker_1
+
+special_working_day_3:
+  working_date: 2018-12-17
+  working_template: special_working_template_2
+  worker: special_worker_2
+
+special_working_day_4:
+  working_date: 2018-12-18
+  working_template: special_working_template_3
+  worker: special_worker_3

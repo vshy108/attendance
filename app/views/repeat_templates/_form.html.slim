@@ -1,0 +1,42 @@
+= form_for @repeat_template do |f|
+  = render_error_messages(@errors, 'repeat template', self)
+
+  .field
+    = f.label :repeat_day_difference
+    br
+    = f.number_field :repeat_day_difference, min: 2, step: 1, required: true
+  .field
+    = f.label :worker_id, 'Worker'
+    br
+    = f.select :worker_id, options_for_select(@workers.collect { | worker | [worker.name, worker.id] }, @repeat_template.worker_id), include_blank: @repeat_template.persisted? ? false : '-'
+
+  #repeat_template_parts
+    p
+      strong
+        | Repeat template parts:
+    = f.fields_for :repeat_template_parts do |repeat_template_part|
+      = render 'repeat_template_part_fields', f: repeat_template_part
+
+    .links
+      = link_to_add_association 'add repeat template parts', f, :repeat_template_parts
+
+  .actions = f.submit (@repeat_template.persisted? ? 'Update' : 'Create')
+
+javascript:
+  $(document).on('turbolinks:load', function() {
+    $('#repeat_template_parts').on('cocoon:after-insert', function(_, insertedItem) {
+      insertedItem.find('.first-repeat-date-picker').datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d',
+        maxDate: "#{{@today_string}}"
+      });
+    });
+
+    $('.first-repeat-date-picker').datetimepicker({
+      timepicker: false,
+      format: 'Y-m-d',
+      maxDate: "#{{@today_string}}"
+    });
+  });
+
+

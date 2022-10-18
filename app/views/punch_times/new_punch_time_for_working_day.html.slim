@@ -1,0 +1,14 @@
+h1 Create PunchTime for #{@worker_name}'s #{@working_date_string}
+p From #{@start.strftime('%F %R')} to #{@end.strftime('%F %R')}
+= form_tag(create_punch_time_for_working_day_path(working_day_id: @working_day_id, start: @start.strftime('%F %R'), end: @end.strftime('%F %R')), method: :post) do
+  = render_error_messages(@errors, 'punch time', self)
+  .field
+    = label_tag "Punch Datetime"
+    input#fixed-working-day-punched_datetime[name="punched_datetime" type="text" autocomplete="off"]
+  .actions
+    = submit_tag "Create"
+
+javascript:
+  var previous_day = "#{{@previous_day}}";
+  var next_day = "#{{@next_day}}";
+  $('#fixed-working-day-punched_datetime').datetimepicker({ minDate: previous_day, maxDate: next_day });

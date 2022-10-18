@@ -1,0 +1,17 @@
+table.daily
+  thead
+    tr
+      th Name
+      th Punch Times
+      th Odd
+      th Hour
+      th OT
+      th Late
+      th Valid OT
+      th OT Value (RM)
+      th style="text-align: center" Pay OT (RM)
+
+  tbody
+    - @worker_reports.each do |worker_report|
+      = render_daily_report_tr(worker_report, self)
+

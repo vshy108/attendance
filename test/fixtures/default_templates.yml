@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% 9.times do |n| %>
+default_template_<%= n %>:
+  worker_id: <%= ActiveRecord::FixtureSet.identify("worker_#{n}".parameterize.underscore.to_sym) %>
+  working_template_id: <%= ActiveRecord::FixtureSet.identify("working_template_#{n}".parameterize.underscore.to_sym) %>
+<% end %>
+
+special_default_template_0:
+  worker: special_worker_0
+  working_template: special_working_template_0
+
+special_default_template_1:
+  worker: special_worker_1
+  working_template: special_working_template_1
+
+special_default_template_2:
+  worker: special_worker_2
+  working_template: special_working_template_2
+
+special_default_template_3:
+  worker: special_worker_3
+  working_template: special_working_template_3

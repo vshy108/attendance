@@ -1,0 +1,45 @@
+h2 Reports
+
+.report-warn = render_abnormal_working_days(@abnormal_working_day_ids_length, self)
+
+= form_tag(report_dashboard_path, class:'filter-container', method: :get) do
+  .input-grouping
+    .inner-group
+      label Choose a Start Date
+      input#start-date[name="start_date" type="text" autocomplete="off"]
+    .inner-group
+      label Type
+      = select_tag "daily_monthly", options_for_select(@options, params[:daily_monthly])
+  = submit_tag "Search"
+
+h5 Report for #{@start_date}, #{@start_date_weekday} (#{@daily_monthly})
+
+.report-table
+  = render_report(@daily_monthly, @worker_reports, @dates_header_string, self)
+
+div Legend
+div.legend.legend-odd Odd case detected
+div.legend.legend-ot Overtime
+div.legend.legend-late Late
+div.legend.legend-absence Absence
+
+p.worker-count Total Workers: #{@worker_reports.count}
+
+javascript:
+  var today_string = "#{{@today_string}}";
+  var start_date = "#{{@start_date}}";
+  if (start_date) {
+    $('#start-date').datetimepicker({
+      maxDate: today_string,
+      timepicker: false,
+      format: 'Y-m-d',
+      value: start_date
+    });
+  } else {
+    $('#start-date').datetimepicker({
+      maxDate: today_string,
+      timepicker: false,
+      format: 'Y-m-d',
+    });
+  }
+

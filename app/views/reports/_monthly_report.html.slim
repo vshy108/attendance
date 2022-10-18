@@ -1,0 +1,33 @@
+table.monthly
+  thead
+    tr
+      th Name
+      - @dates_header_string.each_with_index do |dhs, index|
+        th
+          div style="display: block"
+            div = dhs
+            div = weekday_short_string(@start_date_wday, index)
+      th Total Hours
+      th Total OT
+      th Total Late
+      th Total Valid OT
+      th OT Value (RM)
+      th Pay OT (RM)
+
+  tbody
+    - @worker_reports.each do |worker_report|
+      - total_ot_minutes = worker_report[:total_ot_minutes]
+      - overtime_value = worker_report[:overtime_value]
+      tr
+        td = link_to(worker_report[:worker_name], worker_path(id: worker_report[:worker_id]))
+        - worker_report[:reports].each do |report|
+          - if report[:no_attendance]
+            td.monthly-absence -
+          - else
+            = render_month_table_content(report, report[:working_day_id])
+        td = minutes_to_hhmm(worker_report[:total_working_minutes])
+        td = minutes_to_hhmm(worker_report[:total_overtime_in_mins_ignore_lateness])
+        td = minutes_to_hhmm(worker_report[:total_late_minutes])
+        td = minutes_to_hhmm(total_ot_minutes)
+        td = overtime_value ? "#{number_with_precision(overtime_value, precision: 2)}" : '-'
+        td = render_ot_pay(overtime_value, total_ot_minutes)

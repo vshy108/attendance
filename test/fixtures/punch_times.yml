@@ -1,0 +1,113 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% 1000.times do |n| %>
+punch_time_<%= n %>:
+  punched_datetime: <%= (Time.zone.now - 20.days + n * 1.minute).change(sec: 0) %>
+  # ActiveRecord::FixtureSet.identify return ID instead of the class object
+  worker_id: <%= ActiveRecord::FixtureSet.identify("worker_#{n % 10}".parameterize.underscore.to_sym) %>
+  working_day_id: <%= ActiveRecord::FixtureSet.identify("working_day_#{n % 9}".parameterize.underscore.to_sym) %>
+<% end %>
+
+punch_time_no_working_day:
+  punched_datetime: <%= Time.zone.now - 21.days %>
+  worker: worker_0
+
+special_punch_time_0_0:
+  punched_datetime: 2018-12-14 08:32:00 +08 +08:00
+  worker: special_worker_0
+  working_day: special_working_day_0
+
+special_punch_time_0_1:
+  punched_datetime: 2018-12-14 13:01:00 +08 +08:00
+  worker: special_worker_0
+  working_day: special_working_day_0
+
+special_punch_time_0_2:
+  punched_datetime: 2018-12-14 14:02:00 +08 +08:00
+  worker: special_worker_0
+  working_day: special_working_day_0
+
+special_punch_time_0_3:
+  punched_datetime: 2018-12-14 18:03:00 +08 +08:00
+  worker: special_worker_0
+  uncertain_working_day: special_working_day_0
+
+special_punch_time_1_0:
+  punched_datetime: 2018-12-15 08:42:00 +08 +08:00
+  worker: special_worker_0
+  working_day: special_working_day_1
+
+special_punch_time_1_1:
+  punched_datetime: 2018-12-15 13:42:00 +08 +08:00
+  worker: special_worker_0
+  working_day: special_working_day_1
+
+special_punch_time_1_2:
+  punched_datetime: 2018-12-15 14:42:00 +08 +08:00
+  worker: special_worker_0
+  working_day: special_working_day_1
+
+special_punch_time_1_3:
+  punched_datetime: 2018-12-15 19:42:00 +08 +08:00
+  worker: special_worker_0
+  uncertain_working_day: special_working_day_1
+
+special_punch_time_2_0:
+  punched_datetime: 2018-12-16 08:42:00 +08 +08:00
+  worker: special_worker_1
+  working_day: special_working_day_2
+
+special_punch_time_2_1:
+  punched_datetime: 2018-12-16 13:42:00 +08 +08:00
+  worker: special_worker_1
+  working_day: special_working_day_2
+
+special_punch_time_2_2:
+  punched_datetime: 2018-12-16 14:42:00 +08 +08:00
+  worker: special_worker_1
+  working_day: special_working_day_2
+
+special_punch_time_2_3:
+  punched_datetime: 2018-12-16 19:42:00 +08 +08:00
+  worker: special_worker_1
+  uncertain_working_day: special_working_day_2
+
+special_punch_time_3_0:
+  punched_datetime: 2018-12-17 08:42:00 +08 +08:00
+  worker: special_worker_2
+  working_day: special_working_day_3
+
+special_punch_time_3_1:
+  punched_datetime: 2018-12-17 13:42:00 +08 +08:00
+  worker: special_worker_2
+  working_day: special_working_day_3
+
+special_punch_time_3_2:
+  punched_datetime: 2018-12-17 14:42:00 +08 +08:00
+  worker: special_worker_2
+  working_day: special_working_day_3
+
+special_punch_time_3_3:
+  punched_datetime: 2018-12-17 19:42:00 +08 +08:00
+  worker: special_worker_2
+  uncertain_working_day: special_working_day_3
+
+special_punch_time_4_0:
+  punched_datetime: 2018-12-18 08:42:00 +08 +08:00
+  worker: special_worker_3
+  working_day: special_working_day_4
+
+special_punch_time_4_1:
+  punched_datetime: 2018-12-18 13:42:00 +08 +08:00
+  worker: special_worker_3
+  working_day: special_working_day_4
+
+special_punch_time_4_2:
+  punched_datetime: 2018-12-18 14:42:00 +08 +08:00
+  worker: special_worker_3
+  working_day: special_working_day_4
+
+special_punch_time_4_3:
+  punched_datetime: 2018-12-18 19:42:00 +08 +08:00
+  worker: special_worker_3
+  uncertain_working_day: special_working_day_4

@@ -1,0 +1,23 @@
+h1 Abnormal Working Days
+
+table
+  thead
+    tr
+      th ID
+      th Working Date
+      th Worker's Name
+      th Punch Time Count
+      th
+
+  tbody
+    - @abnormal_working_days.each do |abnormal_working_day|
+      tr
+        td = abnormal_working_day.id
+        td = abnormal_working_day.working_date.strftime('%F')
+        td = abnormal_working_day.worker.name || '-'
+        td = @abnormal_working_days_hash[abnormal_working_day.id]
+        td = link_to 'Fix', working_day_path(abnormal_working_day)
+
+br
+== pagy_bootstrap_responsive_nav(@pagy)
+br

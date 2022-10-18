@@ -1,0 +1,20 @@
+h4 Setting Page
+
+.setting-container
+  p.category-name
+    | Worker
+  .category
+    .category-setting
+      .setting-description
+        p.setting-title
+          | New Worker
+        p.setting-detail
+          | Create a new worker to your company
+      = link_to "Create", new_worker_path, class:'btn-new-worker'
+    .category-setting
+      .setting-description
+        p.setting-title
+          | Minimum Minutes Difference between Punchings
+        p.setting-detail
+          | Configure the minimum minutes difference between two punchings of same worker
+      = link_to "Edit", edit_minimum_punch_diff_path, class:'btn-new-worker'

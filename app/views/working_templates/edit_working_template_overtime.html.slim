@@ -1,0 +1,73 @@
+h1 Editing overtime of working template, #{@working_template.name}
+
+= form_for(@working_template, url: update_working_template_overtime_path(@working_template), method: :put) do |f|
+  = render_error_messages(@errors, 'working template', self)
+
+  .field
+    = label_tag "Overtime Type"
+    br
+    = select_tag "overtime_type", options_for_select(@overtime_options.collect {|option| [ option.titleize, option ] }, @current_overtime_option)
+
+  .field#override_working_minutes
+    label Minimum Working Hours #{"(maximum value is #{@minutes_to_hours_minutes_string})"}
+    br
+    = text_field_tag 'minimum_working_hours', nil, autocomplete: 'off'
+    | hrs
+    = text_field_tag 'minimum_working_minutes', nil, autocomplete: 'off'
+    | mins
+    br
+    small #{"(empty both fields means it follows the total minutes of valid working sections for overtime type of disabled and direct after off work)"}
+
+  = hidden_field_tag 'working_template[override_working_minutes]', ''
+
+  .actions = f.submit (@working_template.persisted? ? 'Update' : 'Create')
+
+h3 Valid Work Sections
+
+table
+  thead
+    tr
+      th No.
+      th From
+      th To
+
+  tbody
+    - @working_template.valid_work_sections.each_with_index do |valid_work_section, index|
+      tr
+        td = index + 1
+        td = formatted_time_range(valid_work_section.from_time_in_minute)
+        td = formatted_time_range(valid_work_section.to_time_in_minute)
+
+javascript:
+  $(document).on('turbolinks:load', function() {
+    var override = "#{{@working_template.override_working_minutes}}";
+    if (override !== "") {
+      if ($('#minimum_working_hours')[0]) {
+        $('#minimum_working_hours')[0].value = parseInt(override / 60, 10);
+      }
+      if ($('#minimum_working_minutes')[0]) {
+        $('#minimum_working_minutes')[0].value = parseInt(override % 60, 10);
+      }
+      $('#working_template_override_working_minutes').val(override);
+    }
+
+    function assignMinimumWorkingMinutes(minutes_values, hours_values) {
+      if (hours_values === '' && minutes_values === '') {
+        $('#working_template_override_working_minutes').val('');
+      } else {
+        var minutes = parseInt(minutes_values || 0, 10);
+        var hours = parseInt(hours_values || 0, 10);
+        $('#working_template_override_working_minutes').val(hours * 60 + minutes);
+      }
+    }
+
+    $('#minimum_working_hours').on('change', function(){
+      var minutes_values = $('#minimum_working_minutes').val();
+      assignMinimumWorkingMinutes(minutes_values, this.value);
+    });
+
+    $('#minimum_working_minutes').on('change', function(){
+      var hours_values = $('#minimum_working_hours').val();
+      assignMinimumWorkingMinutes(this.value, hours_values);
+    });
+  });

@@ -1,0 +1,12 @@
+p
+  strong Punched datetime:
+  = @punch_time.punched_datetime&.strftime('%F %R')
+p
+  strong Worker:
+  = @punch_time.worker.name
+
+=> link_to 'Edit', edit_punch_time_path(@punch_time)
+'|
+=< link_to 'Delete', @punch_time, data: { confirm: 'Are you sure?' }, method: :delete
+'|
+=< link_to 'Back to List', punch_times_path

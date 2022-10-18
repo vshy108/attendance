@@ -1,0 +1,4 @@
+.top-navbar
+  = render "application/flash_message"
+  = link_to(destroy_user_session_path, method: :delete) do
+    | Logout

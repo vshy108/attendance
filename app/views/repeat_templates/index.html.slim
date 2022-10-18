@@ -1,0 +1,40 @@
+h1 Repeat Templates
+
+= search_form_for @search, class:'filter-container' do |f|
+  .input-grouping
+    .inner-group.col-sm
+      = f.label "Input repeat day difference"
+      = f.search_field :repeat_day_difference_eq
+    .inner-group.col-sm
+      = f.label "Input worker name"
+      = f.search_field :worker_name_cont
+  = f.submit
+
+table
+  thead
+    tr
+      th Repeat day difference
+      th Worker name
+      th
+      th
+      th
+
+  tbody
+    - @repeat_templates.each do |repeat_template|
+      tr
+        td = repeat_template.repeat_day_difference
+        td = repeat_template.worker.name
+        td = link_to 'Show', repeat_template
+        td = link_to 'Edit', edit_repeat_template_path(repeat_template)
+        td = link_to 'Destroy', repeat_template, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+== pagy_bootstrap_responsive_nav(@pagy)
+br
+
+= link_to 'New Repeat template', new_repeat_template_path
+
+javascript:
+  $(document).on('turbolinks:load', function() {
+    Pagy.init()
+  });

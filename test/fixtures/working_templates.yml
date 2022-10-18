@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% 10.times do |n| %>
+working_template_<%= n %>:
+  name: <%= "working_template_#{n}" %>
+  override_working_minutes: nil
+<% end %>
+
+special_working_template_0:
+  name: 'Both'
+  override_working_minutes: 510
+
+special_working_template_1:
+  name: 'Direct after off work'
+
+special_working_template_2:
+  name: 'More than minimum'
+  override_working_minutes: 510
+
+special_working_template_3:
+  name: 'Disabled'

@@ -1,0 +1,81 @@
+h1 #{@working_day.working_date.strftime('%v')}, #{@working_day.worker.name} #{@working_day_status}
+
+.row
+  p.col-4
+    => "Working Template:"
+    = link_to(@working_template.name, working_template_path(@working_template))
+
+.row
+  p.col-4
+    => "Working hours:"
+    = @worker_report[:working_minutes].presence ? "#{minutes_to_hhmm(@worker_report[:working_minutes])} hrs" : '-'
+  p.col-4
+    => "Late:"
+    = @worker_report[:late_flag] ? "#{minutes_to_hhmm(@worker_report[:late_minutes])} hrs" : '-'
+  p.col-4
+    => "OT:"
+    = @worker_report[:overtime_in_mins_ignore_lateness].presence ? "#{minutes_to_hhmm(@worker_report[:overtime_in_mins_ignore_lateness])} hrs" : '-'
+
+.row
+  p.col-4
+    => "Valid OT:"
+    = @worker_report[:overtime_in_mins].presence ? "#{minutes_to_hhmm(@worker_report[:overtime_in_mins])} hrs" : '-'
+  p.col-4
+    => "Overtime Value:"
+    = render_overtime_value(@overtime_value)
+  p.col-4
+    => "Pay OT:"
+    = @worker_report[:overtime_in_mins].presence ? "RM #{render_ot_pay(@overtime_value, @worker_report[:overtime_in_mins])}" : '-'
+
+table
+  thead
+    tr
+      th No.
+      th From
+      th To
+
+  tbody
+    - @valid_work_sections.each_with_index do |valid_work_section, index|
+      tr
+        td = index + 1
+        td = formatted_time_range(valid_work_section.from_time_in_minute)
+        td = formatted_time_range(valid_work_section.to_time_in_minute)
+
+= link_to 'New Punch Time for this working day', new_punch_time_for_working_day_path(working_day_id: @working_day.id)
+
+table
+  thead
+    tr
+      th ID
+      th Punched Datetime
+      th
+      th
+
+  tbody
+    - @punch_times.each do |punch_time|
+      tr
+        td = punch_time.id
+        td = punch_time.punched_datetime.strftime('%F %R')
+        td
+          - if punch_time.uncertain_working_day_id.presence
+            = link_to 'Edit', edit_uncertain_working_day_path(punch_time, working_day_id: @working_day.id)
+        td
+          button.delete-punch-times-fix-button[value=punch_time.id]
+            | Delete
+
+= link_to 'Back to report page', report_dashboard_path
+
+
+javascript:
+  $('.delete-punch-times-fix-button').on('click', function(){
+    if (confirm('Delete it?')) {
+      $.ajax({
+        url: "/punch_times/" + this.value,
+        dataType: 'json',
+        type: "DELETE",
+        success: function(responseData) {
+          location.reload();
+        }
+      });
+    }
+  });

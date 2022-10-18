@@ -1,0 +1,23 @@
+.login-container
+  = form_for @worker do |f|
+    = render_error_messages(@errors, 'worker', self)
+
+    .field
+      = f.label :name, 'Name*'
+      br
+      = f.text_field(:name, autoComplete: "off")
+      br
+    .field
+      = f.label :overtime_value, "Overtime value (RM)", 'text-transform': 'capitalize'
+      br
+      = f.number_field :overtime_value, min: 0, step: 0.01, max: 999.99
+    .field
+      label[for="worker_working_template_id"] Default Working Template*
+      br
+      = select_tag "worker[working_template_id]", options_from_collection_for_select(@working_templates, "id", "name", @worker&.default_template&.working_template&.id), include_blank: @worker.persisted? ? false : '-'
+      br
+      - if @worker.persisted?
+        small
+          = "(it won't affect the punch time before this)"
+
+    .actions = f.submit (@worker.persisted? ? 'Update' : 'Create')

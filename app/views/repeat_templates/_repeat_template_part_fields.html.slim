@@ -1,0 +1,6 @@
+.nested-fields
+  = f.label :first_repeat_date
+  = f.text_field :first_repeat_date, class: "first-repeat-date-picker", autocomplete: 'off'
+  = f.label :working_template_id
+  = f.select :working_template_id, options_for_select(@working_templates.collect { | working_template | [working_template.name, working_template.id] }, current_template_id(f.options[:child_index])), {include_blank: '-', required: true}
+  = link_to_remove_association "remove this", f

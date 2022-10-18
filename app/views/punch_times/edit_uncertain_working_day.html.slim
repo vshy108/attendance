@@ -1,0 +1,10 @@
+h1 Edit Uncertain Working Day
+small = "(Current: #{@current_option} for #{@punch_time.punched_datetime.strftime("%F %R")})"
+
+= form_tag(update_uncertain_working_day_path(@punch_time, working_day_id: @working_day_id), method: :put) do
+  .field
+    = label_tag "Working day"
+    br
+    = select_tag "uncertain_working_day", options_for_select(@options, @current_option)
+  .actions
+    = submit_tag "Update"

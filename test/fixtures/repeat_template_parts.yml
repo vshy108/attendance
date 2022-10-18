@@ -1,0 +1,16 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+repeat_template_part_one:
+  first_repeat_date: 2019-01-16
+  repeat_template: repeat_template_one
+  working_template: working_template_0
+
+repeat_template_part_two:
+  first_repeat_date: 2019-01-16
+  repeat_template: repeat_template_two
+  working_template: working_template_0
+
+repeat_template_part_three:
+  first_repeat_date: 2019-01-30
+  repeat_template: repeat_template_one
+  working_template: working_template_1

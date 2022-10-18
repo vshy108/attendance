@@ -1,0 +1,10 @@
+tr
+  td = link_to(@worker_report[:worker_name], worker_path(id: @worker_report[:worker_id]))
+  td -
+  td -
+  td -
+  td -
+  td -
+  td -
+  td = @worker_report[:overtime_value] ? "#{number_with_precision(@worker_report[:overtime_value], precision: 2)}" : '-'
+  td -
